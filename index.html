@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jenslin - Portfolio</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background: #0a0a0a;
+        color: white;
+        overflow: hidden;
+        height: 100vh;
+    }
+
+    /* Animated background */
+    .bg-animation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3), transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3), transparent 50%),
+                    radial-gradient(circle at 40% 80%, rgba(120, 200, 255, 0.3), transparent 50%);
+        animation: bgMove 20s ease-in-out infinite;
+        z-index: -1;
+    }
+
+    @keyframes bgMove {
+        0%, 100% { transform: scale(1) rotate(0deg); }
+        50% { transform: scale(1.1) rotate(180deg); }
+    }
+
+    /* Container for all sections */
+    .container {
+        width: 100%;
+        height: 100vh;
+        position: relative;
+    }
+
+    /* All sections initially hidden */
+    .section {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        transform: translateY(100px);
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        pointer-events: none;
+    }
+
+    .section.active {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: all;
+    }
+
+    /* Top Bar */
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 30px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        backdrop-filter: blur(10px);
+        z-index: 100;
+    }
+
+    .logo {
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        transition: all 0.3s ease;
+    }
+
+    .logo:hover {
+        transform: scale(1.1);
+    }
+
+    .say-hi {
+        font-size: 16px;
+        cursor: pointer;
+        padding: 10px 20px;
+        border: 1px solid rgba(255,255,255,0.3);
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+
+    .say-hi:hover {
+        background: rgba(255,255,255,0.1);
+        transform: translateY(-2px);
+    }
+
+    /* Main Content */
+    .main {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 0 100px;
+    }
+
+    /* Sidebars */
+    .left-bar, .right-bar {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        z-index: 10;
+    }
+
+    .left-bar { 
+        left: 30px; 
+    }
+
+    .right-bar { 
+        right: 30px; 
+    }
+
+    .vertical-text {
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        font-size: 14px;
+        letter-spacing: 3px;
+        cursor: pointer;
+        color: #888;
+        transition: all 0.3s ease;
+        padding: 10px;
+    }
+
+    .vertical-text:hover,
+    .vertical-text.active {
+        color: #fff;
+        transform: rotate(180deg) scale(1.1);
+    }
+
+    /* Social Icons */
+    .social {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .social a {
+        color: #888;
+        font-size: 20px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        padding: 8px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.05);
+    }
+
+    .social a:hover {
+        transform: scale(1.2);
+        color: #4ecdc4;
+        background: rgba(78, 205, 196, 0.2);
+    }
+
+    /* Bottom Bar */
+    .bottom-bar {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 30px;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        font-size: 16px;
+        backdrop-filter: blur(10px);
+    }
+
+    .bottom-item {
+        cursor: pointer;
+        color: #888;
+        transition: all 0.3s ease;
+        padding: 10px 20px;
+        border-radius: 20px;
+    }
+
+    .bottom-item:hover,
+    .bottom-item.active {
+        color: #fff;
+        background: rgba(255,255,255,0.1);
+    }
+
+    /* HOME SECTION - Yin-Yang */
+    .yin-yang-container {
+        text-align: center;
+    }
+
+    .yin-yang {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: linear-gradient(to bottom, white 50%, black 50%);
+        position: relative;
+        margin: 0 auto 30px;
+        cursor: pointer;
+        animation: spin 20s linear infinite;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 30px rgba(255,255,255,0.2);
+    }
+
+    .yin-yang:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 50px rgba(255,255,255,0.4);
+        animation-duration: 5s;
+    }
+
+    .yin-yang::before,
+    .yin-yang::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 50%;
+    }
+
+    .yin-yang::before {
+        top: 0;
+        width: 100px;
+        height: 100px;
+        background: black;
+        border: 35px solid white;
+    }
+
+    .yin-yang::after {
+        bottom: 0;
+        width: 100px;
+        height: 100px;
+        background: white;
+        border: 35px solid black;
+    }
+
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    .click-text {
+        color: #888;
+        font-size: 18px;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+    }
+
+    /* ABOUT SECTION */
+    .about-main {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+    }
+
+    .about-text h1 {
+        font-size: 4rem;
+        margin-bottom: 10px;
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .about-text h2 {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+        color: #ccc;
+    }
+
+    .about-text p {
+        font-size: 1.2rem;
+        color: #aaa;
+        line-height: 1.8;
+        margin-bottom: 25px;
+    }
+
+    .character {
+        width: 350px;
+        height: 350px;
+        background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 6rem;
+        margin: 0 auto;
+        animation: float 4s ease-in-out infinite;
+        position: relative;
+    }
+
+    .character::before {
+        content: '👋';
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-size: 3rem;
+        animation: wave 2s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    @keyframes wave {
+        0%, 100% { transform: rotate(0deg); }
+        25% { transform: rotate(20deg); }
+        75% { transform: rotate(-20deg); }
+    }
+
+    /* SKILLS SECTION */
+    .skills-main {
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .skills-title {
+        font-size: 3rem;
+        margin-bottom: 60px;
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+    }
+
+    .skill-card {
+        background: rgba(255,255,255,0.05);
+        padding: 40px 30px;
+        border-radius: 20px;
+        border: 1px solid rgba(255,255,255,0.1);
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+
+    .skill-card:hover {
+        transform: translateY(-10px);
+        background: rgba(255,255,255,0.1);
+        border-color: rgba(78, 205, 196, 0.5);
+    }
+
+    .skill-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        color: #4ecdc4;
+    }
+
+    .skill-card p {
+        color: #aaa;
+        line-height: 1.6;
+    }
+
+    /* PROJECTS SECTION */
+    .projects-main {
+        max-width: 1400px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .projects-title {
+        font-size: 3rem;
+        margin-bottom: 60px;
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 30px;
+    }
+
+    .project-card {
+        background: rgba(255,255,255,0.05);
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.1);
+        transition: all 0.3s ease;
+        text-align: left;
+    }
+
+    .project-card:hover {
+        transform: scale(1.05);
+        border-color: rgba(78, 205, 196, 0.5);
+    }
+
+    .project-image {
+        height: 180px;
+        background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+    }
+
+    .project-content {
+        padding: 25px;
+    }
+
+    .project-content h3 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+        color: #fff;
+    }
+
+    .project-content p {
+        color: #aaa;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .project-tags {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+
+    .tag {
+        padding: 5px 12px;
+        background: rgba(78, 205, 196, 0.2);
+        border-radius: 15px;
+        font-size: 0.8rem;
+        color: #4ecdc4;
+    }
+
+    .visit-btn {
+        padding: 10px 20px;
+        background: #4ecdc4;
+        border: none;
+        border-radius: 25px;
+        color: black;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .visit-btn:hover {
+        background: #45b7d1;
+        transform: translateY(-2px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .main {
+            padding: 0 20px;
+        }
+
+        .left-bar, .right-bar {
+            display: none;
+        }
+
+        .about-main {
+            grid-template-columns: 1fr;
+            gap: 40px;
+            text-align: center;
+        }
+
+        .about-text h1 {
+            font-size: 3rem;
+        }
+
+        .character {
+            width: 250px;
+            height: 250px;
+            font-size: 4rem;
+        }
+
+        .projects-grid,
+        .skills-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .top-bar,
+        .bottom-bar {
+            padding: 15px 20px;
+        }
+    }
+</style>
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation"></div>
+
+    <div class="container">
+        <!-- HOME SECTION -->
+        <div class="section active" id="home">
+            <div class="top-bar">
+                <div class="logo" onclick="goHome()">JENSLIN S</div>
+                <div class="say-hi" onclick="sayHi()">Say hi..</div>
+            </div>
+
+            <div class="main">
+                <div class="left-bar">
+                    <div class="vertical-text active" onclick="showSection('home')">Resume</div>
+                    <div class="vertical-text" onclick="showSection('projects')">Projects</div>
+                    <div class="social">
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="yin-yang-container">
+                    <div class="yin-yang" onclick="showAbout()"></div>
+                    <div class="click-text">click here</div>
+                </div>
+
+                <div class="right-bar">
+                    <div class="vertical-text">Feats</div>
+                </div>
+            </div>
+
+            <div class="bottom-bar">
+                <div class="bottom-item" onclick="showAbout()">About</div>
+                <div class="bottom-item" onclick="showSkills()">My Skills</div>
+            </div>
+        </div>
+
+        <!-- ABOUT SECTION -->
+        <div class="section" id="about">
+            <div class="top-bar">
+                <div class="logo" onclick="goHome()">JENSLIN S</div>
+                <div class="say-hi" onclick="goHome()">← Back</div>
+            </div>
+
+            <div class="main">
+                <div class="about-main">
+                    <div class="about-text">
+                        <h1>Hi,</h1>
+                        <h2>I'm Jenslin.</h2>
+                        <p>A highly skilled, self-driven Software Engineer at Zoho with the proven ability to adapt to any situation. A Programming Polyglot and Goal driven Natural Leader.</p>
+                        <p>Passionate about creating innovative solutions and building amazing digital experiences that make a difference in people's lives.</p>
+                    </div>
+                    <div class="character">👨‍💻</div>
+                </div>
+            </div>
+
+            <div class="bottom-bar">
+                <div class="bottom-item" onclick="goHome()">← Home</div>
+                <div class="bottom-item" onclick="showSkills()">My Skills →</div>
+            </div>
+        </div>
+
+        <!-- SKILLS SECTION -->
+        <div class="section" id="skills">
+            <div class="top-bar">
+                <div class="logo" onclick="goHome()">JENSLIN S</div>
+                <div class="say-hi" onclick="goHome()">← Back</div>
+            </div>
+
+            <div class="main">
+                <div class="skills-main">
+                    <h2 class="skills-title">My Skills</h2>
+                    <div class="skills-grid">
+                        <div class="skill-card">
+                            <h3>Frontend Development</h3>
+                            <p>React, Vue.js, JavaScript, TypeScript, HTML5, CSS3. Creating responsive and interactive user interfaces.</p>
+                        </div>
+                        <div class="skill-card">
+                            <h3>Backend Development</h3>
+                            <p>Node.js, Python, Java, REST APIs, GraphQL, microservices architecture, and database design.</p>
+                        </div>
+                        <div class="skill-card">
+                            <h3>Cloud & DevOps</h3>
+                            <p>AWS, Docker, Kubernetes, CI/CD pipelines, Jenkins, Git version control, and Linux systems.</p>
+                        </div>
+                        <div class="skill-card">
+                            <h3>Mobile Development</h3>
+                            <p>React Native and Flutter for building cross-platform mobile applications.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-bar">
+                <div class="bottom-item" onclick="showAbout()">← About</div>
+                <div class="bottom-item" onclick="showSection('projects')">Projects →</div>
+            </div>
+        </div>
+
+        <!-- PROJECTS SECTION -->
+        <div class="section" id="projects">
+            <div class="top-bar">
+                <div class="logo" onclick="goHome()">JENSLIN S</div>
+                <div class="say-hi" onclick="goHome()">← Back</div>
+            </div>
+
+            <div class="main">
+                <div class="projects-main">
+                    <h2 class="projects-title">Featured Work</h2>
+                    <div class="projects-grid">
+                        <div class="project-card">
+                            <div class="project-image">💎</div>
+                            <div class="project-content">
+                                <h3>KryptoGify</h3>
+                                <p>This platform allows you to perform transactions via Blockchain by using Ethereum mainnet. Prerequisite: Web3.0 Wallet.</p>
+                                <div class="project-tags">
+                                    <span class="tag">#Blockchain</span>
+                                    <span class="tag">#Ethereum</span>
+                                    <span class="tag">#Web3</span>
+                                </div>
+                                <button class="visit-btn">Visit</button>
+                            </div>
+                        </div>
+
+                        <div class="project-card">
+                            <div class="project-image">🔒</div>
+                            <div class="project-content">
+                                <h3>Breach Checker</h3>
+                                <p>This website checks if your passwords or critical information has been leaked anywhere in the internet or not. Completely free, secure and not vulnerable to attacks.</p>
+                                <div class="project-tags">
+                                    <span class="tag">#SIH</span>
+                                    <span class="tag">#Security</span>
+                                    <span class="tag">#MongoDB</span>
+                                </div>
+                                <button class="visit-btn">Visit</button>
+                            </div>
+                        </div>
+
+                        <div class="project-card">
+                            <div class="project-image">👑</div>
+                            <div class="project-content">
+                                <h3>Crypto King</h3>
+                                <p>Crypto king is a cryptocurrency web app that displays Top 100 crypto currencies as well as relevant information about each coin.</p>
+                                <div class="project-tags">
+                                    <span class="tag">#Crypto</span>
+                                    <span class="tag">#API</span>
+                                    <span class="tag">#Charts</span>
+                                </div>
+                                <button class="visit-btn">Visit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-bar">
+                <div class="bottom-item" onclick="showSkills()">← Skills</div>
+                <div class="bottom-item" onclick="goHome()">Home</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation Functions
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show target section
+            setTimeout(() => {
+                document.getElementById(sectionId).classList.add('active');
+            }, 100);
+
+            // Update navigation active states
+            updateNavigation(sectionId);
+        }
+
+        function updateNavigation(activeSection) {
+            // Update vertical navigation
+            document.querySelectorAll('.vertical-text').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            if (activeSection === 'home' || activeSection === 'projects') {
+                const activeNav = document.querySelector(`[onclick="showSection('${activeSection}')"]`);
+                if (activeNav) activeNav.classList.add('active');
+            }
+        }
+
+        function goHome() {
+            showSection('home');
+        }
+
+        function showAbout() {
+            showSection('about');
+        }
+
+        function showSkills() {
+            showSection('skills');
+        }
+
+        function sayHi() {
+            alert('Hi there! 👋\n\nThanks for checking out my portfolio!\n\n📧 jenslin@email.com\n💼 Connect with me on social media below!\n\nLet\'s build something amazing together!');
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            const sections = ['home', 'about', 'skills', 'projects'];
+            const currentSection = document.querySelector('.section.active').id;
+            const currentIndex = sections.indexOf(currentSection);
+
+            if (e.key === 'ArrowRight' && currentIndex < sections.length - 1) {
+                showSection(sections[currentIndex + 1]);
+            } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                showSection(sections[currentIndex - 1]);
+            } else if (e.key === 'Escape') {
+                goHome();
+            }
+        });
+
+        // Initialize animations on load
+        window.addEventListener('load', function() {
+            // Add subtle entrance animations
+            setTimeout(() => {
+                document.querySelector('.yin-yang').style.animationDuration = '20s';
+            }, 1000);
+        });
+
+        // Enhanced yin-yang interaction
+        const yinYang = document.querySelector('.yin-yang');
+        if (yinYang) {
+            yinYang.addEventListener('mouseenter', function() {
+                this.style.animationDuration = '3s';
+            });
+
+            yinYang.addEventListener('mouseleave', function() {
+                this.style.animationDuration = '20s';
+            });
+        }
+    </script>
+</body>
+</html>

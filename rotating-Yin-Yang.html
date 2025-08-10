@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rotating Yin-Yang</title>
+<style>
+    body {
+        background: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .yin-yang {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: linear-gradient(white 50%, black 50%);
+        position: relative;
+        animation: spin 5s linear infinite;
+    }
+    .yin-yang::before,
+    .yin-yang::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 50%;
+    }
+    .yin-yang::before {
+        top: 0;
+        width: 75px;
+        height: 75px;
+        background: black;
+        border: 26px solid white;
+    }
+    .yin-yang::after {
+        bottom: 0;
+        width: 75px;
+        height: 75px;
+        background: white;
+        border: 26px solid black;
+    }
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+</style>
+</head>
+<body>
+    <div class="yin-yang"></div>
+</body>
+</html>
