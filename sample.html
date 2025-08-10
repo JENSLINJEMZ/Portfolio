@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jenslin - Portfolio</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background: #0a0a0a;
+        color: white;
+        overflow: hidden;
+        height: 100vh;
+    }
+
+    /* Animated background */
+    .bg-animation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3), transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3), transparent 50%),
+                    radial-gradient(circle at 40% 80%, rgba(120, 200, 255, 0.3), transparent 50%);
+        animation: bgMove 20s ease-in-out infinite;
+        z-index: -1;
+    }
+
+    @keyframes bgMove {
+        0%, 100% { transform: scale(1) rotate(0deg); }
+        50% { transform: scale(1.1) rotate(180deg); }
+    }
+
+    /* Container */
+    .container {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Top Bar */
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 30px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        backdrop-filter: blur(10px);
+        z-index: 100;
+    }
+
+    .logo {
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        transition: all 0.3s ease;
+    }
+
+    .logo:hover {
+        transform: scale(1.1);
+    }
+
+    .say-hi {
+        font-size: 16px;
+        cursor: pointer;
+        padding: 10px 20px;
+        border: 1px solid rgba(255,255,255,0.3);
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+
+    .say-hi:hover {
+        background: rgba(255,255,255,0.1);
+        transform: translateY(-2px);
+    }
+
+    /* Main Content */
+    .main {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 0 100px;
+    }
+
+    /* Left Sidebar */
+    .left-bar {
+        position: absolute;
+        left: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        z-index: 10;
+    }
+
+    .vertical-text {
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        font-size: 14px;
+        letter-spacing: 3px;
+        cursor: pointer;
+        color: #888;
+        transition: all 0.3s ease;
+        padding: 10px;
+    }
+
+    .vertical-text:hover,
+    .vertical-text.active {
+        color: #fff;
+        transform: rotate(180deg) scale(1.1);
+    }
+
+    .vertical-text.active {
+        color: #4ecdc4;
+    }
+
+    /* Social Icons */
+    .social {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .social a {
+        color: #888;
+        font-size: 20px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        padding: 8px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.05);
+    }
+
+    .social a:hover {
+        transform: scale(1.2);
+        color: #4ecdc4;
+        background: rgba(78, 205, 196, 0.2);
+    }
+
+    /* Right Sidebar */
+    .right-bar {
+        position: absolute;
+        right: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        z-index: 10;
+    }
+
+    /* Yin-Yang Center */
+    .yin-yang-container {
+        text-align: center;
+    }
+
+    .yin-yang {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: linear-gradient(to bottom, white 50%, black 50%);
+        position: relative;
+        margin: 0 auto 30px;
+        cursor: pointer;
+        animation: spin 20s linear infinite;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 30px rgba(255,255,255,0.2);
+    }
+
+    .yin-yang:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 50px rgba(255,255,255,0.4);
+        animation-duration: 3s;
+    }
+
+    .yin-yang::before,
+    .yin-yang::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 50%;
+    }
+
+    .yin-yang::before {
+        top: 0;
+        width: 100px;
+        height: 100px;
+        background: black;
+        border: 35px solid white;
+    }
+
+    .yin-yang::after {
+        bottom: 0;
+        width: 100px;
+        height: 100px;
+        background: white;
+        border: 35px solid black;
+    }
+
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    .click-text {
+        color: #888;
+        font-size: 18px;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+    }
+
+    /* Bottom Bar */
+    .bottom-bar {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 30px;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        font-size: 16px;
+        backdrop-filter: blur(10px);
+    }
+
+    .bottom-item {
+        cursor: pointer;
+        color: #888;
+        transition: all 0.3s ease;
+        padding: 10px 20px;
+        border-radius: 20px;
+    }
+
+    .bottom-item:hover {
+        color: #fff;
+        background: rgba(255,255,255,0.1);
+        transform: translateY(-2px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .main {
+            padding: 0 20px;
+        }
+
+        .left-bar, .right-bar {
+            display: none;
+        }
+
+        .top-bar,
+        .bottom-bar {
+            padding: 15px 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+        }
+
+        .say-hi {
+            font-size: 14px;
+            padding: 8px 16px;
+        }
+
+        .yin-yang {
+            width: 150px;
+            height: 150px;
+        }
+
+        .yin-yang::before,
+        .yin-yang::after {
+            width: 75px;
+            height: 75px;
+        }
+
+        .yin-yang::before {
+            border: 26px solid white;
+        }
+
+        .yin-yang::after {
+            border: 26px solid black;
+        }
+    }
+</style>
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation"></div>
+
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="logo">JEN</div>
+            <div class="say-hi" onclick="sayHi()">Say hi..</div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main">
+            <!-- Left Sidebar -->
+            <div class="left-bar">
+                <div class="vertical-text active">Resume</div>
+                <div class="vertical-text">Projects</div>
+                <div class="social">
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <!-- Center Yin-Yang -->
+            <div class="yin-yang-container">
+                <div class="yin-yang"></div>
+                <div class="click-text">click here</div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="right-bar">
+                <div class="vertical-text">Feats</div>
+            </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="bottom-bar">
+            <div class="bottom-item">About</div>
+            <div class="bottom-item">My Skills</div>
+        </div>
+    </div>
+
+    <script>
+        function sayHi() {
+            alert('Hi there! 👋\n\nThanks for visiting my portfolio!\n\n📧 jenslin@email.com\n💼 Let\'s connect!\n\nHave a great day!');
+        }
+
+        // Enhanced yin-yang interaction
+        const yinYang = document.querySelector('.yin-yang');
+        if (yinYang) {
+            yinYang.addEventListener('mouseenter', function() {
+                this.style.animationDuration = '3s';
+            });
+
+            yinYang.addEventListener('mouseleave', function() {
+                this.style.animationDuration = '20s';
+            });
+
+            yinYang.addEventListener('click', function() {
+                // Add click effect
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+        }
+
+        // Interactive navigation hover effects
+        document.querySelectorAll('.vertical-text').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.vertical-text').forEach(el => el.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

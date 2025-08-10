@@ -19,23 +19,81 @@
         height: 100vh;
     }
 
-    /* Animated background */
+    /* Space background with stars */
     .bg-animation {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3), transparent 50%),
-                    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3), transparent 50%),
-                    radial-gradient(circle at 40% 80%, rgba(120, 200, 255, 0.3), transparent 50%);
-        animation: bgMove 20s ease-in-out infinite;
+        background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+        overflow: hidden;
         z-index: -1;
     }
 
-    @keyframes bgMove {
-        0%, 100% { transform: scale(1) rotate(0deg); }
-        50% { transform: scale(1.1) rotate(180deg); }
+    .stars {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    .star {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        animation: twinkle 3s infinite;
+    }
+
+    .star.small {
+        width: 1px;
+        height: 1px;
+        animation: moveStars 50s linear infinite;
+    }
+
+    .star.medium {
+        width: 2px;
+        height: 2px;
+        animation: moveStars 40s linear infinite;
+        box-shadow: 0 0 5px rgba(255,255,255,0.8);
+    }
+
+    .star.large {
+        width: 3px;
+        height: 3px;
+        animation: moveStars 30s linear infinite;
+        box-shadow: 0 0 10px rgba(255,255,255,0.9);
+    }
+
+    @keyframes twinkle {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 1; }
+    }
+
+    @keyframes moveStars {
+        from { transform: translateX(-100px); }
+        to { transform: translateX(100vw); }
+    }
+
+    /* Shooting stars */
+    .shooting-star {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: white;
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px rgba(255,255,255,0.1), 0 0 0 8px rgba(255,255,255,0.1), 0 0 20px rgba(255,255,255,1);
+        animation: shootingStar 3s ease-out infinite;
+    }
+
+    @keyframes shootingStar {
+        0% {
+            transform: translateX(-100px) translateY(-100px);
+            opacity: 1;
+        }
+        100% {
+            transform: translateX(100vw) translateY(100vh);
+            opacity: 0;
+        }
     }
 
     /* Container for all sections */
@@ -508,14 +566,16 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Animated Background -->
-    <div class="bg-animation"></div>
+    <!-- Space Background with Stars -->
+    <div class="bg-animation">
+        <div class="stars" id="stars"></div>
+    </div>
 
     <div class="container">
         <!-- HOME SECTION -->
         <div class="section active" id="home">
             <div class="top-bar">
-                <div class="logo" onclick="goHome()">JENSLIN S</div>
+                <div class="logo" onclick="goHome()">JEN</div>
                 <div class="say-hi" onclick="sayHi()">Say hi..</div>
             </div>
 
@@ -524,11 +584,11 @@
                     <div class="vertical-text active" onclick="showSection('home')">Resume</div>
                     <div class="vertical-text" onclick="showSection('projects')">Projects</div>
                     <div class="social">
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#" onclick="showContact('linkedin')"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" onclick="showContact('github')"><i class="fab fa-github"></i></a>
+                        <a href="#" onclick="showContact('twitter')"><i class="fab fa-twitter"></i></a>
+                        <a href="#" onclick="showContact('facebook')"><i class="fab fa-facebook"></i></a>
+                        <a href="#" onclick="showContact('youtube')"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
 
@@ -551,7 +611,7 @@
         <!-- ABOUT SECTION -->
         <div class="section" id="about">
             <div class="top-bar">
-                <div class="logo" onclick="goHome()">JENSLIN S</div>
+                <div class="logo" onclick="goHome()">JEN</div>
                 <div class="say-hi" onclick="goHome()">← Back</div>
             </div>
 
@@ -576,7 +636,7 @@
         <!-- SKILLS SECTION -->
         <div class="section" id="skills">
             <div class="top-bar">
-                <div class="logo" onclick="goHome()">JENSLIN S</div>
+                <div class="logo" onclick="goHome()">JEN</div>
                 <div class="say-hi" onclick="goHome()">← Back</div>
             </div>
 
@@ -613,7 +673,7 @@
         <!-- PROJECTS SECTION -->
         <div class="section" id="projects">
             <div class="top-bar">
-                <div class="logo" onclick="goHome()">JENSLIN S</div>
+                <div class="logo" onclick="goHome()">JEN</div>
                 <div class="say-hi" onclick="goHome()">← Back</div>
             </div>
 
@@ -631,7 +691,7 @@
                                     <span class="tag">#Ethereum</span>
                                     <span class="tag">#Web3</span>
                                 </div>
-                                <button class="visit-btn">Visit</button>
+                                <button class="visit-btn" onclick="showProjectDetails('kryptogify')">Visit</button>
                             </div>
                         </div>
 
@@ -645,7 +705,7 @@
                                     <span class="tag">#Security</span>
                                     <span class="tag">#MongoDB</span>
                                 </div>
-                                <button class="visit-btn">Visit</button>
+                                <button class="visit-btn" onclick="showProjectDetails('breach-checker')">Visit</button>
                             </div>
                         </div>
 
@@ -659,7 +719,7 @@
                                     <span class="tag">#API</span>
                                     <span class="tag">#Charts</span>
                                 </div>
-                                <button class="visit-btn">Visit</button>
+                                <button class="visit-btn" onclick="showProjectDetails('crypto-king')">Visit</button>
                             </div>
                         </div>
                     </div>
@@ -674,7 +734,120 @@
     </div>
 
     <script>
-        // Navigation Functions
+        // Create space background with moving stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            
+            // Create regular stars
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Random size
+                const size = Math.random();
+                if (size < 0.5) star.classList.add('small');
+                else if (size < 0.8) star.classList.add('medium');
+                else star.classList.add('large');
+                
+                // Random position
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                
+                // Random animation delay
+                star.style.animationDelay = Math.random() * 50 + 's';
+                star.style.animationDuration = (30 + Math.random() * 20) + 's';
+                
+                starsContainer.appendChild(star);
+            }
+            
+            // Create shooting stars
+            setInterval(() => {
+                const shootingStar = document.createElement('div');
+                shootingStar.classList.add('shooting-star');
+                shootingStar.style.left = Math.random() * 100 + '%';
+                shootingStar.style.top = Math.random() * 50 + '%';
+                starsContainer.appendChild(shootingStar);
+                
+                setTimeout(() => {
+                    shootingStar.remove();
+                }, 3000);
+            }, 5000);
+        }
+
+        // Project details data
+        const projectData = {
+            'kryptogify': {
+                title: 'KryptoGify',
+                description: 'A complete blockchain platform for Ethereum transactions',
+                details: '🚀 Features:\n• Web3.0 Wallet Integration\n• Smart Contract Interactions\n• Real-time Transaction Tracking\n• Secure Blockchain Operations\n\n💻 Tech Stack:\n• React.js\n• Web3.js\n• Ethereum\n• Solidity\n• MetaMask Integration\n\n🌐 Live Demo: https://kryptogify.netlify.app',
+                github: 'https://github.com/jenslin/kryptogify'
+            },
+            'breach-checker': {
+                title: 'Breach Checker',
+                description: 'Advanced security tool for data breach detection',
+                details: '🔒 Features:\n• Password Breach Detection\n• Email Security Check\n• Real-time Vulnerability Scanning\n• Secure Data Handling\n• No Data Storage Policy\n\n💻 Tech Stack:\n• Node.js\n• MongoDB\n• Express.js\n• Security APIs\n• Encryption\n\n🏆 Awards: Smart India Hackathon Winner\n🌐 Live Demo: https://breach-checker.netlify.app',
+                github: 'https://github.com/jenslin/breach-checker'
+            },
+            'crypto-king': {
+                title: 'Crypto King',
+                description: 'Comprehensive cryptocurrency tracking platform',
+                details: '📈 Features:\n• Top 100 Crypto Tracking\n• Real-time Price Updates\n• Market Analysis\n• Portfolio Management\n• Price Alerts\n• Historical Data Charts\n\n💻 Tech Stack:\n• React.js\n• Chart.js\n• CoinGecko API\n• Material-UI\n• Redux\n\n🌐 Live Demo: https://crypto-king-app.netlify.app',
+                github: 'https://github.com/jenslin/crypto-king'
+            }
+        };
+
+        // Social media links data
+        const socialLinks = {
+            'linkedin': {
+                name: 'LinkedIn',
+                url: 'https://linkedin.com/in/jenslin',
+                description: 'Connect with me professionally'
+            },
+            'github': {
+                name: 'GitHub',
+                url: 'https://github.com/jenslin',
+                description: 'Check out my code repositories'
+            },
+            'twitter': {
+                name: 'Twitter',
+                url: 'https://twitter.com/jenslin',
+                description: 'Follow my tech journey'
+            },
+            'facebook': {
+                name: 'Facebook',
+                url: 'https://facebook.com/jenslin',
+                description: 'Personal updates and tech news'
+            },
+            'youtube': {
+                name: 'YouTube',
+                url: 'https://youtube.com/@jenslin',
+                description: 'Tech tutorials and project demos'
+            }
+        };
+
+        // Show project details
+        function showProjectDetails(projectId) {
+            const project = projectData[projectId];
+            if (project) {
+                const message = `${project.title}\n\n${project.description}\n\n${project.details}`;
+                if (confirm(message + '\n\nWould you like to visit the project?')) {
+                    // In a real scenario, you would open the actual project URL
+                    alert('🚀 Opening project...\n\nNote: This is a demo portfolio. In the real version, this would open the actual project URL.');
+                }
+            }
+        }
+
+        // Show contact information
+        function showContact(platform) {
+            const social = socialLinks[platform];
+            if (social) {
+                const message = `${social.name}\n\n${social.description}\n\nURL: ${social.url}`;
+                if (confirm(message + '\n\nWould you like to visit this profile?')) {
+                    // In a real scenario, you would open the actual social media URL
+                    alert('🔗 Opening social media profile...\n\nNote: This is a demo portfolio. In the real version, this would open the actual social media profile.');
+                }
+            }
+        }
         function showSection(sectionId) {
             // Hide all sections
             document.querySelectorAll('.section').forEach(section => {
@@ -733,8 +906,11 @@
             }
         });
 
-        // Initialize animations on load
+        // Initialize everything when page loads
         window.addEventListener('load', function() {
+            // Create space background
+            createStars();
+            
             // Add subtle entrance animations
             setTimeout(() => {
                 document.querySelector('.yin-yang').style.animationDuration = '20s';
